@@ -1,13 +1,17 @@
 // Importando com (ESM)
 const express = require('express')
+const cors = require('cors')
 const dotenv = require('dotenv')
 const alunoRoutes = require('./src/modules/aluno/routes/index')
 const routerEndereco = require('./src/modules/endereco/routes/index')
 dotenv.config();
 
+
 const port = process.env.PORTA;
 const app = express();
 
+
+app.use(cors());
 //Aplicação use express com json
 app.use(express.json());
 
