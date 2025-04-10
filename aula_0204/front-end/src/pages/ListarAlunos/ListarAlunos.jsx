@@ -40,4 +40,4 @@ function ListarAlunos() {
 
 }
 
-export default ListarAlunossssss;
+export default ListarAlunos;
