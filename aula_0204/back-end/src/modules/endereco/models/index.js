@@ -1,5 +1,5 @@
 const axios = require('axios')
-const { pool } = require ('../../../config/database')
+const { pool } = require ('../../../config/configDb')
 
 class EnderecoModel{
     static async criarEndereco(matricula,cep, numero, ponto_referencia){

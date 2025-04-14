@@ -1,40 +1,54 @@
-const { pool } = require ("../../../config/database") //CONSULTA NO BANCO = MODELS
+const { DataTypes } = require('sequelize');
+const sequelize = require('../../../config/configDb')
+const Aluno = sequelize.define(
+  "Aluno",
+  {
+    matricula: {
+      type: DataTypes.CHAR(5),
+      primaryKey: true
+    },
+    nome: {
+      type: DataTypes.STRING(100),
+      allowNull: false
+    },
+    email: {
+        type: DataTypes.STRING(60),
+        allowNull: false,
+        unique: true,
+        validate:{
+            isEmail:{
+                msg: 'Forneça um email válido!'
+            },
+        len:{
+            args:[10,60],
+            msg: 'O email deve ter no minimo 10 caracteres e no máximo 60!'
+        }    
+        }
+    },
+    senha:{
+        type: DataTypes.STRING(10),
+        allowNull: false,
+        validate:{
+            len:{
+                args:[10],
+                msg: 'A senha deve ter 10 caracteres'
+            },
+            is: {
+                msg: 'A senha deve ter pelo menos uma letra maiscula'
+            }
+        }
+    }
+    turma_id:{
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: 
+    }
+  },
+  {
+    tableName:'aluno',
+    createdAt: 'Criado_em',
+    updatedAt:'Atualizado_em'
+  }
+);
 
-class AlunoModel{
-    static async criar(matricula, nome, email, senha){
-        const dados = [matricula, nome, email, senha]
-        const consulta = `insert into aluno(matricula, nome, email, senha)
-        values ($1, $2, $3, $4) returning *`
-        const novoAluno = await pool.query(consulta, dados)
-        return novoAluno.rows
-    }
-    static async editar(matricula, nome, email, senha){
-        const dados = [matricula,nome, email, senha]
-        const consulta = `update aluno set nome = $2, email = $3, senha = $4
-        where matricula = $1 returning *`
-        const alunoAtualizado = await pool.query(consulta,dados)
-        return alunoAtualizado.rows
-    }
-    static async listar(){
-        const consulta = `select * from aluno`
-        const alunos = await pool.query(consulta)
-        return alunos.rows
-    }
-    static async listarPorMatricula(matricula){
-        const dados = [matricula]
-        const consulta = `select * from aluno where matricula = $1`
-        const aluno = await pool.query(consulta,dados)
-        return aluno.rows
-    }
-    static async excluirPorMatricula(matricula){
-        const dados = [matricula]
-        const consulta = `delete from aluno where matricula = $1`
-        const aluno = await pool.query(consulta,dados)
-    }
-    static async excluirTodos(){
-        const consulta = `delete from aluno`
-        await pool.query(consulta)
-    }
-}
-
-module.exports = AlunoModel
+module.exports = Aluno
