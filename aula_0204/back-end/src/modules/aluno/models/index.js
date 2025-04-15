@@ -37,11 +37,10 @@ const Aluno = sequelize.define(
                 msg: 'A senha deve ter pelo menos uma letra maiscula'
             }
         }
-    }
+    },
     turma_id:{
       type: DataTypes.INTEGER,
-      allowNull: false,
-      references: 
+      allowNull: false
     }
   },
   {
